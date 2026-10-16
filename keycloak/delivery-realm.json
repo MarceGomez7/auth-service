@@ -1,0 +1,67 @@
+{
+  "realm": "delivery",
+  "enabled": true,
+  "displayName": "Mesa Delivery",
+  "accessTokenLifespan": 60,
+  "roles": {
+    "realm": [
+      { "name": "CLIENTE", "description": "Puede crear y consultar sus pedidos" },
+      { "name": "REPARTIDOR", "description": "Puede consultar y entregar pedidos" }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "mesa-web",
+      "name": "Mesa Delivery Web",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "implicitFlowEnabled": false,
+      "redirectUris": ["http://localhost:3000/*"],
+      "webOrigins": ["http://localhost:3000"],
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "post.logout.redirect.uris": "+"
+      },
+      "protocolMappers": [
+        {
+          "name": "orders-api-audience",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.custom.audience": "orders-api",
+            "access.token.claim": "true",
+            "id.token.claim": "false"
+          }
+        }
+      ]
+    }
+  ],
+  "users": [
+    {
+      "username": "cliente",
+      "enabled": true,
+      "email": "cliente@delivery.local",
+      "emailVerified": true,
+      "requiredActions": [],
+      "firstName": "Sofía",
+      "lastName": "Cliente",
+      "credentials": [{ "type": "password", "value": "demo123", "temporary": false }],
+      "realmRoles": ["CLIENTE"]
+    },
+    {
+      "username": "repartidor",
+      "enabled": true,
+      "email": "repartidor@delivery.local",
+      "emailVerified": true,
+      "requiredActions": [],
+      "firstName": "Mateo",
+      "lastName": "Repartidor",
+      "credentials": [{ "type": "password", "value": "demo123", "temporary": false }],
+      "realmRoles": ["REPARTIDOR"]
+    }
+  ]
+}

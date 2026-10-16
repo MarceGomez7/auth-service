@@ -1,0 +1,82 @@
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.8.1
+    command: start-dev --import-realm
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_HOSTNAME: http://localhost:8080
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - ./keycloak/delivery-realm.json:/opt/keycloak/data/import/delivery-realm.json:ro
+    networks: [delivery]
+    healthcheck:
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/8080"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 45s
+
+  orders-service:
+    build: .
+    image: mesa-delivery-app:local
+    command: ["node", "modules/orders-service.js"]
+    environment:
+      ORDERS_PORT: 3000
+      OIDC_ISSUER: http://localhost:8080/realms/delivery
+      OIDC_METADATA_URL: http://keycloak:8080/realms/delivery/.well-known/openid-configuration
+      OIDC_INTERNAL_BASE_URL: http://keycloak:8080
+      CATALOG_URL: http://catalog-service:3002
+      NOTIFICATIONS_URL: http://notifications-service:3003
+      SERVICE_SECRET: local-demo-service-secret
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      keycloak:
+        condition: service_healthy
+      catalog-service:
+        condition: service_started
+      notifications-service:
+        condition: service_started
+    networks: [delivery]
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 4s
+      retries: 5
+
+  catalog-service:
+    build: .
+    image: mesa-delivery-app:local
+    command: ["node", "modules/catalog-service.js"]
+    environment:
+      CATALOG_PORT: 3002
+    ports:
+      - "127.0.0.1:3002:3002"
+    networks: [delivery]
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3002/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 4s
+      retries: 5
+
+  notifications-service:
+    build: .
+    image: mesa-delivery-app:local
+    command: ["node", "modules/notifications-service.js"]
+    environment:
+      NOTIFICATIONS_PORT: 3003
+      SERVICE_SECRET: local-demo-service-secret
+    ports:
+      - "127.0.0.1:3003:3003"
+    networks: [delivery]
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3003/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 4s
+      retries: 5
+
+networks:
+  delivery:
+    name: mesa-delivery-network

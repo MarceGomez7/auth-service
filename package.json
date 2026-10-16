@@ -1,0 +1,12 @@
+{
+  "name": "delivery-orders-security-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Demo local OAuth 2.0/OIDC con Keycloak, JWT y servicios de pedidos delivery.",
+  "scripts": {
+    "start": "node start.js",
+    "start:infra": "docker compose up -d",
+    "stop:infra": "docker compose down",
+    "start:orders": "node modules/orders-service.js"
+  }
+}

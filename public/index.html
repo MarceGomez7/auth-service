@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#f6f5f0">
+  <title>Mesa · Pedidos</title>
+  <style>
+    :root{--bg:#f6f5f0;--white:#fff;--ink:#282a24;--muted:#82837a;--line:#e8e6de;--orange:#ea7045;--orange-pale:#fff0e9;--green:#398167;--green-pale:#e7f2eb;--yellow:#b2822f;--yellow-pale:#fbf3df;--blue:#55769d;--blue-pale:#edf2f8;--sans:'DM Sans',sans-serif;--display:'Manrope',sans-serif;--mono:'DM Mono',monospace}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);font:14px/1.5 var(--sans);color:var(--ink)}button,input,select{font:inherit}button{cursor:pointer}.app{max-width:1160px;margin:auto;padding:23px 30px 50px}.nav{height:48px;display:flex;justify-content:space-between;align-items:center;margin-bottom:37px}.brand{display:flex;align-items:center;gap:10px;font:800 18px var(--display);letter-spacing:-.05em}.brand-icon{width:35px;height:35px;background:var(--orange);color:white;border-radius:12px;display:grid;place-items:center;font-size:19px}.nav-side{display:flex;align-items:center;gap:10px}.role-pill{border:1px solid var(--line);background:#fff;padding:6px 9px;border-radius:30px;font:10px var(--mono);color:var(--muted)}.avatar{width:31px;height:31px;border-radius:50%;background:#f8dfd2;color:#b45430;display:grid;place-items:center;font-weight:700;font-size:11px}.logout{border:0;background:none;color:var(--muted);font-size:12px}.header{display:flex;justify-content:space-between;align-items:flex-end;gap:15px;margin-bottom:22px}.eyebrow{font:10px var(--mono);text-transform:uppercase;letter-spacing:.12em;color:var(--orange);margin-bottom:6px}.header h1{font:800 clamp(30px,4vw,42px)/1.05 var(--display);letter-spacing:-.06em;margin:0}.header p{color:var(--muted);margin:7px 0 0;font-size:13px}.button{border:0;border-radius:9px;padding:10px 14px;font-weight:700}.primary{background:var(--orange);color:#fff}.primary:hover{background:#d85e35}.secondary{background:#fff;border:1px solid var(--line);color:var(--ink)}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:17px}.stat{border:1px solid var(--line);background:white;border-radius:13px;padding:14px 17px}.stat-label{font-size:11px;color:var(--muted)}.stat-line{display:flex;justify-content:space-between;align-items:center;margin-top:5px}.stat-value{font:700 24px var(--display);letter-spacing:-.05em}.stat-mark{width:28px;height:28px;border-radius:9px;background:var(--orange-pale);color:var(--orange);display:grid;place-items:center}.stat:nth-child(2) .stat-mark{background:var(--yellow-pale);color:var(--yellow)}.stat:nth-child(3) .stat-mark{background:var(--green-pale);color:var(--green)}.panel{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}.panel-head{display:flex;justify-content:space-between;align-items:center;padding:14px 17px;border-bottom:1px solid var(--line)}.panel-head h2{font:700 14px var(--display);margin:0}.panel-head span{font:10px var(--mono);color:var(--muted)}.filters{display:flex;align-items:center;gap:5px;padding:11px 15px;border-bottom:1px solid var(--line)}.filter{border:0;background:none;border-radius:7px;padding:7px 10px;color:var(--muted);font-size:11px}.filter.active{background:#f6f4ee;color:var(--ink);font-weight:700}.search{margin-left:auto;width:190px;border:1px solid var(--line);background:#fff;border-radius:7px;padding:7px 9px;font-size:11px;outline:none}.order{display:grid;grid-template-columns:1.15fr 1.25fr .7fr .74fr auto;gap:13px;align-items:center;padding:14px 17px;border-bottom:1px solid var(--line)}.order:last-child{border-bottom:0}.column-head{padding-top:10px;padding-bottom:10px;background:#fcfbf8;color:var(--muted);font:9px var(--mono);text-transform:uppercase;letter-spacing:.08em}.order-main strong{display:block;font-size:12px}.order-main small,.order-detail small{display:block;color:var(--muted);font-size:10px;margin-top:3px}.order-detail{font-size:11px}.total{font-weight:700;font-size:11px}.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 8px;border-radius:30px;font:9px var(--mono);white-space:nowrap}.badge:before{content:'';width:5px;height:5px;border-radius:50%;background:currentColor}.pending{color:var(--yellow);background:var(--yellow-pale)}.preparing{color:#8d6f2c;background:#f7f0df}.ontheway{color:var(--blue);background:var(--blue-pale)}.delivered{color:var(--green);background:var(--green-pale)}.action{border:1px solid var(--line);background:#fff;border-radius:7px;padding:6px 8px;font-size:10px;color:var(--ink);white-space:nowrap}.action:hover{border-color:#edb29a}.action:disabled{opacity:.4;cursor:not-allowed}.empty{padding:35px;text-align:center;color:var(--muted);font-size:12px}.notice{margin-top:13px;min-height:0;padding:0;border-radius:9px;font-size:11px}.notice:not(:empty){padding:11px 13px;border:1px solid var(--line);background:white;color:var(--muted)}.notice.error:not(:empty){color:#a74637;background:#fff0ed;border-color:#f0d3cc}.notice.ok:not(:empty){color:var(--green);background:var(--green-pale);border-color:#d0e6d8}.architecture{display:flex;align-items:center;gap:9px;margin-top:19px;color:var(--muted);font:9px var(--mono)}.service{padding:7px 9px;border:1px solid var(--line);background:#fff;border-radius:7px}.service span{color:var(--green)}.arrow{color:#aaa}.backdrop{display:none;position:fixed;inset:0;background:#2a2a2070;place-items:center;padding:18px}.backdrop.open{display:grid}.modal{width:min(410px,100%);background:#fff;border-radius:15px;padding:22px;box-shadow:0 22px 70px #20231b35}.modal h2{font:700 19px var(--display);letter-spacing:-.04em;margin:0}.modal p{color:var(--muted);font-size:11px;margin:5px 0 16px}.label{display:block;font-size:11px;font-weight:700;margin:12px 0 5px}.input,.select{width:100%;border:1px solid var(--line);border-radius:8px;padding:10px;background:#fff;outline:0}.input:focus,.select:focus{border-color:#eaa082}.modal-foot{display:flex;justify-content:flex-end;gap:8px;margin-top:19px}.login{min-height:100vh;display:grid;place-items:center;padding:20px}.login-card{background:#fff;border:1px solid var(--line);border-radius:17px;padding:26px;width:min(390px,100%);box-shadow:0 18px 50px #30291a0b}.login-card h1{font:800 27px var(--display);letter-spacing:-.06em;margin:17px 0 2px}.login-card>p{color:var(--muted);font-size:12px;margin:0 0 16px}.login-card .button{width:100%;margin-top:16px}.login-error{min-height:16px;margin-top:8px;color:#b74739;font-size:11px}.demo-hint{font:10px var(--mono);color:var(--muted);background:#f8f7f2;padding:9px;border-radius:7px;margin-top:12px}
+    @media(max-width:760px){.app{padding:17px 13px 35px}.nav{margin-bottom:26px}.header{align-items:flex-start;flex-direction:column}.stats{gap:7px}.stat{padding:11px}.stat-value{font-size:20px}.stat-mark{display:none}.filters{flex-wrap:wrap}.search{width:100%;margin:4px 0 0}.column-head{display:none}.order{grid-template-columns:1fr auto;gap:7px 10px}.order-main{grid-column:1}.order-detail{grid-column:1}.order .badge{grid-column:2;grid-row:1}.order .total{grid-column:1;grid-row:3}.order .order-actions{grid-column:2;grid-row:3}.architecture{flex-wrap:wrap}.role-pill{display:none}}
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <div class="backdrop" id="backdrop"><section class="modal" role="dialog" aria-modal="true"><h2>Nuevo pedido</h2><p>Elegí productos del menú y cargá la dirección de entrega.</p><div id="productChoices"></div><label class="label" for="address">Dirección de entrega</label><input class="input" id="address" placeholder="Calle y altura, barrio"><div class="modal-foot"><button class="button secondary" id="cancel">Cancelar</button><button class="button primary" id="submitOrder">Confirmar pedido</button></div></section></div>
+  <script>
+    const OIDC = { issuer: 'http://localhost:8080/realms/delivery', clientId: 'mesa-web', redirectUri: 'http://localhost:3000/' };
+    let accessToken = null, idToken = null, user = null, orders = [], catalog = [], filter = 'TODOS';
+    const root = document.querySelector('#root'), backdrop = document.querySelector('#backdrop');
+    async function ordersApi(path, options = {}) {
+      const response = await fetch(path, { ...options, headers: { ...(options.headers || {}), ...(accessToken ? { authorization: `Bearer ${accessToken}` } : {}) } });
+      const body = await response.json();
+      if (!response.ok) { const error = new Error(body.error || 'No se pudo completar la operación.'); error.status = response.status; throw error; }
+      return body;
+    }
+    function base64url(bytes) { return btoa(String.fromCharCode(...new Uint8Array(bytes))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, ''); }
+    async function pkceChallenge(verifier) { return base64url(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(verifier))); }
+    async function beginLogin() {
+      const random = length => base64url(crypto.getRandomValues(new Uint8Array(length)));
+      const state = random(32), verifier = random(64);
+      sessionStorage.setItem('oidc_state', state); sessionStorage.setItem('oidc_verifier', verifier);
+      const challenge = await pkceChallenge(verifier);
+      const authorize = new URL(`${OIDC.issuer}/protocol/openid-connect/auth`);
+      authorize.search = new URLSearchParams({ client_id: OIDC.clientId, redirect_uri: OIDC.redirectUri, response_type: 'code', scope: 'openid profile', state, code_challenge: challenge, code_challenge_method: 'S256' });
+      location.assign(authorize);
+    }
+    function decodeJwt(jwt) { return JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(jwt.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')), char => char.charCodeAt(0)))); }
+    async function handleOidcCallback() {
+      const params = new URLSearchParams(location.search), code = params.get('code');
+      if (params.has('error')) throw new Error(params.get('error_description') || params.get('error'));
+      if (!code) return false;
+      if (params.get('state') !== sessionStorage.getItem('oidc_state')) throw new Error('State OIDC inválido. Volvé a iniciar sesión.');
+      const verifier = sessionStorage.getItem('oidc_verifier');
+      const response = await fetch(`${OIDC.issuer}/protocol/openid-connect/token`, { method: 'POST', headers: { 'content-type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ grant_type: 'authorization_code', client_id: OIDC.clientId, code, redirect_uri: OIDC.redirectUri, code_verifier: verifier }) });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error_description || 'No se pudieron obtener los tokens OIDC.');
+      accessToken = data.access_token; idToken = data.id_token;
+      const claims = decodeJwt(accessToken), roles = claims.realm_access?.roles || [];
+      user = { name: `${claims.given_name || ''} ${claims.family_name || ''}`.trim() || claims.preferred_username, role: roles.includes('REPARTIDOR') ? 'REPARTIDOR' : 'CLIENTE', username: claims.preferred_username };
+      sessionStorage.removeItem('oidc_state'); sessionStorage.removeItem('oidc_verifier');
+      history.replaceState({}, document.title, '/');
+      return true;
+    }
+    async function logout() {
+      const idTokenHint = idToken; accessToken = null; idToken = null; user = null; orders = [];
+      const end = new URL(`${OIDC.issuer}/protocol/openid-connect/logout`);
+      end.search = new URLSearchParams({ client_id: OIDC.clientId, post_logout_redirect_uri: OIDC.redirectUri });
+      if (idTokenHint) end.searchParams.set('id_token_hint', idTokenHint);
+      location.assign(end);
+    }
+    function loginScreen(error = '') {
+      root.innerHTML = `<main class="login"><section class="login-card"><div class="brand"><span class="brand-icon">⌂</span> Mesa <span style="font:10px var(--mono);font-weight:400;color:var(--muted)">DELIVERY</span></div><h1>Hola, buen día</h1><p>Iniciá sesión de forma segura para ver el menú y tus pedidos.</p><div class="demo-hint">Te vamos a redirigir al proveedor de identidad local (Keycloak).</div><div class="login-error">${escapeHtml(error)}</div><button class="button primary" id="loginButton">Ingresar con Keycloak →</button></section></main>`;
+      document.querySelector('#loginButton').addEventListener('click', () => beginLogin().catch(err => loginScreen(err.message)));
+    }
+    async function refreshOrders() { const data = await ordersApi('/api/pedidos'); orders = data.pedidos; }
+    function renderApp() {
+      const initials = user.name.split(' ').map(word => word[0]).join('').slice(0, 2);
+      root.innerHTML = `<main class="app"><header class="nav"><div class="brand"><span class="brand-icon">⌂</span> Mesa <span style="font:10px var(--mono);font-weight:400;color:var(--muted)">/ PEDIDOS</span></div><div class="nav-side"><span class="role-pill">${user.role}</span><span class="avatar">${initials}</span><button class="logout" id="logout">Salir</button></div></header><section class="header"><div><div class="eyebrow">MIÉRCOLES · OPERACIÓN EN CURSO</div><h1>Pedidos</h1><p>Revisá el estado de los pedidos y gestioná cada entrega.</p></div><button class="button primary" id="newOrder">＋ Crear pedido</button></section><section class="stats"><article class="stat"><div class="stat-label">Pedidos activos</div><div class="stat-line"><div class="stat-value" id="activeCount">0</div><span class="stat-mark">▤</span></div></article><article class="stat"><div class="stat-label">En camino</div><div class="stat-line"><div class="stat-value" id="routeCount">0</div><span class="stat-mark">➜</span></div></article><article class="stat"><div class="stat-label">Entregados</div><div class="stat-line"><div class="stat-value" id="deliveredCount">0</div><span class="stat-mark">✓</span></div></article></section><section class="panel"><div class="panel-head"><h2>Pedidos recientes</h2><span id="orderCount">— PEDIDOS</span></div><div class="filters"><button class="filter active" data-filter="TODOS">Todos</button><button class="filter" data-filter="PENDIENTE">Pendientes</button><button class="filter" data-filter="PREPARANDO">Preparando</button><button class="filter" data-filter="EN CAMINO">En camino</button><button class="filter" data-filter="ENTREGADO">Entregados</button><input class="search" id="search" placeholder="⌕ Buscar pedido"></div><div class="order column-head"><span>Pedido</span><span>Entrega</span><span>Total</span><span>Estado</span><span>Acción</span></div><div id="orderList"></div></section><div class="notice" id="notice"></div><div class="architecture"><span class="service">Keycloak OIDC <span>●</span> :8080</span><span class="arrow">— JWT Bearer →</span><span class="service">Orders Service <span>●</span> :3000</span><span style="margin-left:auto">SESIÓN: ${user.name.toUpperCase()}</span></div></main>`;
+      document.querySelector('#logout').addEventListener('click', logout);
+      document.querySelector('#newOrder').addEventListener('click', async () => { if (user.role !== 'CLIENTE') return notice('Solo la cuenta CLIENTE puede crear pedidos.', 'error'); try { const data = await ordersApi('/api/catalogo'); catalog = data.products; showProductChoices(); backdrop.classList.add('open'); } catch (err) { notice(err.message, 'error'); } });
+      document.querySelector('#cancel').addEventListener('click', () => backdrop.classList.remove('open'));
+      document.querySelector('#submitOrder').addEventListener('click', createOrder);
+      document.querySelectorAll('.filter').forEach(button => button.addEventListener('click', () => { filter = button.dataset.filter; document.querySelectorAll('.filter').forEach(item => item.classList.toggle('active', item === button)); renderOrders(); }));
+      document.querySelector('#search').addEventListener('input', renderOrders);
+      loadCatalogSummary();
+      renderOrders();
+    }
+    async function loadCatalogSummary() { try { const response = await fetch('http://localhost:3002/catalog/products'); const data = await response.json(); const el = document.querySelector('#catalogSummary'); if (el) el.textContent = `${data.products.length} productos disponibles`; } catch {} }
+    function showProductChoices() { document.querySelector('#productChoices').innerHTML = catalog.map(product => `<label style="display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line);font-size:11px"><span>${escapeHtml(product.name)}<small style="display:block;color:var(--muted)">$${product.price.toLocaleString('es-AR')}</small></span><span style="color:var(--green);font-size:10px">Disponible</span><input type="number" min="0" max="10" value="0" data-product="${product.id}" aria-label="Cantidad ${escapeHtml(product.name)}" style="width:54px;padding:6px;border:1px solid var(--line);border-radius:6px"></label>`).join(''); }
+    function renderOrders() {
+      const list = document.querySelector('#orderList'); if (!list) return;
+      document.querySelector('#activeCount').textContent = orders.filter(order => order.status !== 'ENTREGADO').length;
+      document.querySelector('#routeCount').textContent = orders.filter(order => order.status === 'EN CAMINO').length;
+      document.querySelector('#deliveredCount').textContent = orders.filter(order => order.status === 'ENTREGADO').length;
+      document.querySelector('#orderCount').textContent = `${orders.length} PEDIDOS`;
+      const q = document.querySelector('#search').value.toLowerCase();
+      const shown = orders.filter(order => (filter === 'TODOS' || order.status === filter) && `${order.id} ${order.customer} ${order.address} ${order.items}`.toLowerCase().includes(q));
+      if (!shown.length) { list.innerHTML = '<div class="empty">No hay pedidos en esta vista.</div>'; return; }
+      list.innerHTML = shown.map(order => `<article class="order"><div class="order-main"><strong>Pedido #${order.id} · ${escapeHtml(order.customer)}</strong><small>${escapeHtml(order.items)} · ${order.createdAt}</small></div><div class="order-detail">${escapeHtml(order.address)}<small>${order.courier ? `Repartidor: ${escapeHtml(order.courier)}` : 'Entrega a domicilio'}</small></div><div class="total">$${Number(order.total).toLocaleString('es-AR')}</div><span class="badge ${statusClass(order.status)}">${order.status}</span><div class="order-actions">${order.status !== 'ENTREGADO' ? `<button class="action" data-deliver="${order.id}" ${user.role !== 'REPARTIDOR' ? 'title="Acción exclusiva para REPARTIDOR"' : ''}>Marcar entregado</button>` : '<span style="font-size:10px;color:var(--green)">✓ Listo</span>'}</div></article>`).join('');
+      list.querySelectorAll('[data-deliver]').forEach(button => button.addEventListener('click', async () => { try { const data = await ordersApi(`/api/pedidos/${button.dataset.deliver}/entregado`, { method: 'PUT' }); updateOrder(data.pedido); notice(`Pedido #${data.pedido.id} marcado como entregado. HTTP 200`, 'ok'); } catch (err) { notice(`${err.message} · HTTP ${err.status || '—'}`, 'error'); } }));
+    }
+    function updateOrder(updated) { orders = orders.map(order => order.id === updated.id ? updated : order); renderOrders(); }
+    async function createOrder() {
+      const address = document.querySelector('#address').value.trim();
+      const selected = [...document.querySelectorAll('[data-product]')].map(input => ({ id: input.dataset.product, quantity: Number(input.value) })).filter(item => item.quantity > 0);
+      if (!address) return notice('Indicá una dirección de entrega.', 'error');
+      if (!selected.length) return notice('Elegí al menos un producto del catálogo.', 'error');
+      try { const data = await ordersApi('/api/pedidos', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ products: selected, address }) }); orders.unshift(data.pedido); backdrop.classList.remove('open'); document.querySelector('#address').value = ''; renderOrders(); notice(`Pedido #${data.pedido.id} creado. HTTP 201`, 'ok'); }
+      catch (err) { notice(`${err.message} · HTTP ${err.status || '—'}`, 'error'); }
+    }
+    function notice(message, type = '') { const el = document.querySelector('#notice'); if (el) { el.textContent = message; el.className = `notice ${type}`; } }
+    function statusClass(status) { return ({ 'PENDIENTE': 'pending', 'PREPARANDO': 'preparing', 'EN CAMINO': 'ontheway', 'ENTREGADO': 'delivered' })[status] || 'pending'; }
+    function escapeHtml(value) { return String(value).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch]); }
+    (async () => { try { const returned = await handleOidcCallback(); if (returned) { await refreshOrders(); renderApp(); } else loginScreen(); } catch (err) { history.replaceState({}, document.title, '/'); loginScreen(err.message); } })();
+  </script>
+</body>
+</html>
