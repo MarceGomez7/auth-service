@@ -62,7 +62,6 @@ auth-service/
 │   └── delivery-realm.json        # Realm, cliente, roles y usuarios de demostración
 ├── docker-compose.yml             # Orquestación de los cuatro componentes
 ├── Dockerfile                     # Imagen de los servicios Node
-├── start.js                       # Inicio local conjunto de los servicios Node
 ├── package.json                   # Comandos npm
 └── README.md
 ```
@@ -220,4 +219,5 @@ sequenceDiagram
 - Issuer: `http://localhost:8080/realms/delivery`.
 - Los access tokens de la demo vencen a los 60 segundos.
 - Orders descubre las claves públicas en el endpoint JWKS del realm; no guarda la clave privada de Keycloak.
+
 
