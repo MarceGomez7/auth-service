@@ -1,4 +1,29 @@
-﻿# Mesa Delivery: OAuth 2.0, OIDC y JWT
+﻿# 🚀 TP 2.2 DevOps — Seguridad: OAuth 2.0/OIDC, JWT y autorización entre servicios
+
+Este repositorio contiene una aplicación práctica de pedidos y delivery para abordar el tema **Seguridad**. El sistema muestra cómo autenticar usuarios con OpenID Connect, emitir y validar access tokens JWT, y autorizar operaciones según los roles del usuario.
+
+## 🎯 Consigna del trabajo práctico
+
+| Tema | Categoría | Tema específico | Pregunta guía | Demo práctica sugerida |
+| ---: | --- | --- | --- | --- |
+| 6 | Seguridad | OAuth 2.0/OIDC, JWT y autorización entre servicios | ¿Cómo autenticar al usuario y autorizar cada recurso sin confiar solo en la interfaz? | Obtener y usar un token; comparar acceso autorizado, token vencido y usuario sin permiso. |
+
+## 🧭 Qué demuestra esta aplicación
+
+Mesa Delivery usa Keycloak como proveedor de identidad. El usuario inicia sesión mediante OIDC Authorization Code + PKCE; luego Orders Service valida el JWT y aplica permisos por rol. La autorización está en la API, aunque la interfaz también adapte las acciones que muestra.
+
+| Prueba | Usuario/condición | Resultado esperado |
+| --- | --- | ---: |
+| Crear un pedido | `CLIENTE` con token válido | `201 Created` |
+| Marcar un pedido como entregado | `CLIENTE` con token válido | `403 Forbidden` |
+| Marcar un pedido como entregado | `REPARTIDOR` con token válido | `200 OK` |
+| Consultar una ruta protegida | Token ausente, inválido o vencido | `401 Unauthorized` |
+
+La consigna de referencia menciona usuario sin permiso, que se demuestra con el `403`. También se puede mostrar token vencido o ausente con el `401`.
+
+---
+
+## Mesa Delivery: OAuth 2.0, OIDC y JWT
 
 Aplicación local de pedidos y delivery para demostrar autenticación y autorización entre servicios. Keycloak administra la identidad, el inicio de sesión y los roles. La aplicación usa **OpenID Connect Authorization Code + PKCE (S256)**; Orders Service valida los access tokens JWT firmados por Keycloak antes de procesar operaciones protegidas.
 
@@ -195,3 +220,4 @@ sequenceDiagram
 - Issuer: `http://localhost:8080/realms/delivery`.
 - Los access tokens de la demo vencen a los 60 segundos.
 - Orders descubre las claves públicas en el endpoint JWKS del realm; no guarda la clave privada de Keycloak.
+
