@@ -3,10 +3,18 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#f6f5f0">
   <title>Mesa · Pedidos</title>
-  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/style.css?v=feedback-modal-1">
 </head>
 <body>
   <div id="root"></div>
+  <div class="feedback-backdrop" id="feedbackBackdrop" aria-hidden="true">
+    <section class="feedback-modal" id="feedbackModal" role="alertdialog" aria-modal="true" aria-labelledby="feedbackTitle" aria-describedby="feedbackMessage" data-type="info">
+      <button class="feedback-close" id="feedbackClose" type="button" aria-label="Cerrar aviso">×</button>
+      <div class="feedback-icon" id="feedbackIcon" aria-hidden="true">i</div>
+      <div class="feedback-copy"><span class="feedback-kicker" id="feedbackKicker">AVISO</span><h2 id="feedbackTitle">Mensaje</h2><p id="feedbackMessage"></p></div>
+      <button class="button primary feedback-action" id="feedbackAction" type="button">Entendido</button>
+    </section>
+  </div>
   <div class="backdrop" id="backdrop"><section class="modal" role="dialog" aria-modal="true"><h2>Nuevo pedido</h2><p>Elegí productos del menú y cargá la dirección de entrega.</p><div id="productChoices"></div><label class="label" for="address">Dirección de entrega</label><input class="input" id="address" placeholder="Calle y altura, barrio"><div class="modal-foot"><button class="button secondary" id="cancel">Cancelar</button><button class="button primary" id="submitOrder">Confirmar pedido</button></div></section></div>
   <script>
     const OIDC = { issuer: 'http://localhost:8080/realms/delivery', clientId: 'mesa-web', redirectUri: 'http://localhost:3000/' };
@@ -54,13 +62,14 @@
       location.assign(end);
     }
     function loginScreen(error = '') {
-      root.innerHTML = `<main class="login"><section class="login-card"><div class="brand"><span class="brand-icon">⌂</span> Mesa <span style="font:10px var(--mono);font-weight:400;color:var(--muted)">DELIVERY</span></div><h1>Hola, buen día</h1><p>Iniciá sesión de forma segura para ver el menú y tus pedidos.</p><div class="demo-hint">Te vamos a redirigir al proveedor de identidad local (Keycloak).</div><div class="login-error">${escapeHtml(error)}</div><button class="button primary" id="loginButton">Ingresar con Keycloak →</button></section></main>`;
-      document.querySelector('#loginButton').addEventListener('click', () => beginLogin().catch(err => loginScreen(err.message)));
+      root.innerHTML = `<main class="login"><section class="login-card"><div class="brand"><span class="brand-icon">⌂</span> Mesa <span style="font:10px var(--mono);font-weight:400;color:var(--muted)">DELIVERY</span></div><h1>Hola, buen día</h1><p>Iniciá sesión de forma segura para ver el menú y tus pedidos.</p><div class="demo-hint">Te vamos a redirigir al proveedor de identidad local (Keycloak).</div><div class="login-error"></div><button class="button primary" id="loginButton">Ingresar con Keycloak →</button></section></main>`;
+      if (error) notice(error, 'error');
+      document.querySelector('#loginButton').addEventListener('click', () => beginLogin().catch(err => notice(err.message, 'error')));
     }
     async function refreshOrders() { const data = await ordersApi('/api/pedidos'); orders = data.pedidos; }
     function renderApp() {
       const initials = user.name.split(' ').map(word => word[0]).join('').slice(0, 2);
-      root.innerHTML = `<main class="app"><header class="nav"><div class="brand"><span class="brand-icon">⌂</span> Mesa <span style="font:10px var(--mono);font-weight:400;color:var(--muted)">/ PEDIDOS</span></div><div class="nav-side"><span class="role-pill">${user.role}</span><span class="avatar">${initials}</span><button class="logout" id="logout">Salir</button></div></header><section class="header"><div><div class="eyebrow">MIÉRCOLES · OPERACIÓN EN CURSO</div><h1>Pedidos</h1><p>Revisá el estado de los pedidos y gestioná cada entrega.</p></div><button class="button primary" id="newOrder">＋ Crear pedido</button></section><section class="stats"><article class="stat"><div class="stat-label">Pedidos activos</div><div class="stat-line"><div class="stat-value" id="activeCount">0</div><span class="stat-mark">▤</span></div></article><article class="stat"><div class="stat-label">En camino</div><div class="stat-line"><div class="stat-value" id="routeCount">0</div><span class="stat-mark">➜</span></div></article><article class="stat"><div class="stat-label">Entregados</div><div class="stat-line"><div class="stat-value" id="deliveredCount">0</div><span class="stat-mark">✓</span></div></article></section><section class="panel"><div class="panel-head"><h2>Pedidos recientes</h2><span id="orderCount">— PEDIDOS</span></div><div class="filters"><button class="filter active" data-filter="TODOS">Todos</button><button class="filter" data-filter="PENDIENTE">Pendientes</button><button class="filter" data-filter="PREPARANDO">Preparando</button><button class="filter" data-filter="EN CAMINO">En camino</button><button class="filter" data-filter="ENTREGADO">Entregados</button><input class="search" id="search" placeholder="⌕ Buscar pedido"></div><div class="order column-head"><span>Pedido</span><span>Entrega</span><span>Total</span><span>Estado</span><span>Acción</span></div><div id="orderList"></div></section><div class="notice" id="notice"></div><div class="architecture"><span class="service">Keycloak OIDC <span>●</span> :8080</span><span class="arrow">— JWT Bearer →</span><span class="service">Orders Service <span>●</span> :3000</span><span style="margin-left:auto">SESIÓN: ${user.name.toUpperCase()}</span></div></main>`;
+      root.innerHTML = `<main class="app"><header class="nav"><div class="brand"><span class="brand-icon">⌂</span> Mesa <span style="font:10px var(--mono);font-weight:400;color:var(--muted)">/ PEDIDOS</span></div><div class="nav-side"><span class="role-pill">${user.role}</span><span class="avatar">${initials}</span><button class="logout" id="logout">Salir</button></div></header><section class="header"><div><div class="eyebrow">MIÉRCOLES · OPERACIÓN EN CURSO</div><h1>Pedidos</h1><p>Revisá el estado de los pedidos y gestioná cada entrega.</p></div><button class="button primary" id="newOrder">＋ Crear pedido</button></section><section class="stats"><article class="stat"><div class="stat-label">Pedidos activos</div><div class="stat-line"><div class="stat-value" id="activeCount">0</div><span class="stat-mark">▤</span></div></article><article class="stat"><div class="stat-label">En camino</div><div class="stat-line"><div class="stat-value" id="routeCount">0</div><span class="stat-mark">➜</span></div></article><article class="stat"><div class="stat-label">Entregados</div><div class="stat-line"><div class="stat-value" id="deliveredCount">0</div><span class="stat-mark">✓</span></div></article></section><section class="panel"><div class="panel-head"><h2>Pedidos recientes</h2><span id="orderCount">— PEDIDOS</span></div><div class="filters"><button class="filter active" data-filter="TODOS">Todos</button><button class="filter" data-filter="PENDIENTE">Pendientes</button><button class="filter" data-filter="PREPARANDO">Preparando</button><button class="filter" data-filter="EN CAMINO">En camino</button><button class="filter" data-filter="ENTREGADO">Entregados</button><input class="search" id="search" placeholder="⌕ Buscar pedido"></div><div class="order column-head"><span>Pedido</span><span>Entrega</span><span>Total</span><span>Estado</span><span>Acción</span></div><div id="orderList"></div></section><div class="architecture"><span class="service">Keycloak OIDC <span>●</span> :8080</span><span class="arrow">— JWT Bearer →</span><span class="service">Orders Service <span>●</span> :3000</span><span style="margin-left:auto">SESIÓN: ${user.name.toUpperCase()}</span></div></main>`;
       document.querySelector('#logout').addEventListener('click', logout);
       document.querySelector('#newOrder').addEventListener('click', async () => { try { const data = await ordersApi('/api/catalogo'); catalog = data.products; showProductChoices(); backdrop.classList.add('open'); } catch (err) { notice(`${err.message} · HTTP ${err.status || '—'}`, 'error'); } });
       document.querySelector('#cancel').addEventListener('click', () => backdrop.classList.remove('open'));
@@ -93,7 +102,26 @@
       try { const data = await ordersApi('/api/pedidos', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ products: selected, address }) }); orders.unshift(data.pedido); backdrop.classList.remove('open'); document.querySelector('#address').value = ''; renderOrders(); notice(`Pedido #${data.pedido.id} creado. HTTP 201`, 'ok'); }
       catch (err) { notice(`${err.message} · HTTP ${err.status || '—'}`, 'error'); }
     }
-    function notice(message, type = '') { const el = document.querySelector('#notice'); if (el) { el.textContent = message; el.className = `notice ${type}`; } }
+    let feedbackTimer;
+    function closeNotice() { const layer = document.querySelector('#feedbackBackdrop'); if (!layer) return; layer.classList.remove('open'); layer.setAttribute('aria-hidden', 'true'); clearTimeout(feedbackTimer); }
+    function notice(message, type = 'info') {
+      const layer = document.querySelector('#feedbackBackdrop'); if (!layer) return;
+      const modal = document.querySelector('#feedbackModal'), normalized = type === 'ok' || type === 'success' ? 'success' : type === 'error' ? 'error' : 'info';
+      const data = { error: ['ERROR', 'No se pudo completar', '!', 'Cerrar'], success: ['LISTO', 'Operación completada', '✓', 'Continuar'], info: ['AVISO', 'Para tener en cuenta', 'i', 'Entendido'] }[normalized];
+      modal.dataset.type = normalized;
+      document.querySelector('#feedbackKicker').textContent = data[0];
+      document.querySelector('#feedbackTitle').textContent = data[1];
+      document.querySelector('#feedbackIcon').textContent = data[2];
+      document.querySelector('#feedbackAction').textContent = data[3];
+      document.querySelector('#feedbackMessage').textContent = message;
+      layer.classList.add('open'); layer.setAttribute('aria-hidden', 'false');
+      clearTimeout(feedbackTimer);
+      document.querySelector('#feedbackAction').focus();
+    }
+    document.querySelector('#feedbackClose').addEventListener('click', closeNotice);
+    document.querySelector('#feedbackAction').addEventListener('click', closeNotice);
+    document.querySelector('#feedbackBackdrop').addEventListener('click', event => { if (event.target.id === 'feedbackBackdrop') closeNotice(); });
+    document.addEventListener('keydown', event => { if (event.key === 'Escape') closeNotice(); });
     function statusClass(status) { return ({ 'PENDIENTE': 'pending', 'PREPARANDO': 'preparing', 'EN CAMINO': 'ontheway', 'ENTREGADO': 'delivered' })[status] || 'pending'; }
     function escapeHtml(value) { return String(value).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch]); }
     (async () => { try { const returned = await handleOidcCallback(); if (returned) { await refreshOrders(); renderApp(); } else loginScreen(); } catch (err) { history.replaceState({}, document.title, '/'); loginScreen(err.message); } })();
