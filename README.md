@@ -187,6 +187,7 @@ flowchart TD
 | --- | ---: |
 | Cliente crea pedido (`POST /api/pedidos`) | `201 Created` |
 | Cliente intenta entregar (`PUT /api/pedidos/:id/entregado`) | `403 Forbidden` |
+| Repartidor intenta crear pedido (`POST /api/pedidos`) | `403 Forbidden` |
 | Repartidor entrega pedido | `200 OK` |
 | Falta el token o está vencido/inválido | `401 Unauthorized` |
 
