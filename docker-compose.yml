@@ -10,9 +10,12 @@ services:
       - "127.0.0.1:8080:8080"
     volumes:
       - ./keycloak/delivery-realm.json:/opt/keycloak/data/import/delivery-realm.json:ro
-    networks: [delivery]
+    networks:
+      - delivery
     healthcheck:
-      test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/8080"]
+      test:
+        - CMD-SHELL
+        - exec 3<>/dev/tcp/127.0.0.1/8080
       interval: 10s
       timeout: 5s
       retries: 30
@@ -21,7 +24,9 @@ services:
   orders-service:
     build: .
     image: mesa-delivery-app:local
-    command: ["node", "modules/orders-service.js"]
+    command:
+      - node
+      - modules/orders-service.js
     environment:
       ORDERS_PORT: 3000
       OIDC_ISSUER: http://localhost:8080/realms/delivery
@@ -39,9 +44,17 @@ services:
         condition: service_started
       notifications-service:
         condition: service_started
-    networks: [delivery]
+    networks:
+      - delivery
     healthcheck:
-      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      test:
+        - CMD
+        - node
+        - -e
+        - >-
+          fetch('http://127.0.0.1:3000/health')
+          .then((response) => process.exit(response.ok ? 0 : 1))
+          .catch(() => process.exit(1))
       interval: 10s
       timeout: 4s
       retries: 5
@@ -49,14 +62,24 @@ services:
   catalog-service:
     build: .
     image: mesa-delivery-app:local
-    command: ["node", "modules/catalog-service.js"]
+    command:
+      - node
+      - modules/catalog-service.js
     environment:
       CATALOG_PORT: 3002
     ports:
       - "127.0.0.1:3002:3002"
-    networks: [delivery]
+    networks:
+      - delivery
     healthcheck:
-      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3002/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      test:
+        - CMD
+        - node
+        - -e
+        - >-
+          fetch('http://127.0.0.1:3002/health')
+          .then((response) => process.exit(response.ok ? 0 : 1))
+          .catch(() => process.exit(1))
       interval: 10s
       timeout: 4s
       retries: 5
@@ -64,15 +87,25 @@ services:
   notifications-service:
     build: .
     image: mesa-delivery-app:local
-    command: ["node", "modules/notifications-service.js"]
+    command:
+      - node
+      - modules/notifications-service.js
     environment:
       NOTIFICATIONS_PORT: 3003
       SERVICE_SECRET: local-demo-service-secret
     ports:
       - "127.0.0.1:3003:3003"
-    networks: [delivery]
+    networks:
+      - delivery
     healthcheck:
-      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3003/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      test:
+        - CMD
+        - node
+        - -e
+        - >-
+          fetch('http://127.0.0.1:3003/health')
+          .then((response) => process.exit(response.ok ? 0 : 1))
+          .catch(() => process.exit(1))
       interval: 10s
       timeout: 4s
       retries: 5

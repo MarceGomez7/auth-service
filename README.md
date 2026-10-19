@@ -51,17 +51,22 @@ Los cuatro componentes se definen en `docker-compose.yml`. Los servicios Node se
 
 ```text
 auth-service/
-├── modules/
-│   ├── orders-service.js          # API de pedidos, UI servida y validación JWT
-│   ├── catalog-service.js         # Productos y precios
-│   └── notifications-service.js   # Avisos internos de entrega
-├── public/
-│   └── index.html                 # Interfaz Mesa y flujo OIDC con PKCE
+├── .dockerignore                  # Archivos que se excluyen del contexto Docker
+├── .editorconfig                  # Convenciones de indentación y codificación
+├── docker-compose.yml             # Orquestación de los servicios
+├── Dockerfile                     # Imagen compartida de los servicios Node
 ├── keycloak/
-│   └── delivery-realm.json        # Realm, cliente, roles y usuarios de demostración
-├── docker-compose.yml             # Orquestación de los cuatro componentes
-├── Dockerfile                     # Imagen de los servicios Node
-├── package.json                   # Comandos npm
+│   └── delivery-realm.json        # Realm, cliente OIDC, roles y usuarios de demo
+├── modules/
+│   ├── catalog-service.js         # API del catálogo de productos y precios
+│   ├── notifications-service.js   # API interna de notificaciones de entrega
+│   └── orders-service.js          # Interfaz web y API de pedidos; valida JWT y roles
+├── package.json                   # Metadatos y comandos npm
+├── public/
+│   ├── branding.css               # Estilos del login y la marca
+│   ├── index.html                 # Interfaz y flujo OIDC Authorization Code + PKCE
+│   ├── mesa-logo.png              # Logo de Mesa Web
+│   └── style.css                  # Estilos principales de la aplicación
 └── README.md
 ```
 

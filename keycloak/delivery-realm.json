@@ -5,8 +5,14 @@
   "accessTokenLifespan": 60,
   "roles": {
     "realm": [
-      { "name": "CLIENTE", "description": "Puede crear y consultar sus pedidos" },
-      { "name": "REPARTIDOR", "description": "Puede consultar y entregar pedidos" }
+      {
+        "name": "CLIENTE",
+        "description": "Puede crear y consultar sus pedidos"
+      },
+      {
+        "name": "REPARTIDOR",
+        "description": "Puede consultar y entregar pedidos"
+      }
     ]
   },
   "clients": [
@@ -19,8 +25,12 @@
       "standardFlowEnabled": true,
       "directAccessGrantsEnabled": false,
       "implicitFlowEnabled": false,
-      "redirectUris": ["http://localhost:3000/*"],
-      "webOrigins": ["http://localhost:3000"],
+      "redirectUris": [
+        "http://localhost:3000/*"
+      ],
+      "webOrigins": [
+        "http://localhost:3000"
+      ],
       "attributes": {
         "pkce.code.challenge.method": "S256",
         "post.logout.redirect.uris": "+"
@@ -49,8 +59,16 @@
       "requiredActions": [],
       "firstName": "Sofía",
       "lastName": "Cliente",
-      "credentials": [{ "type": "password", "value": "demo123", "temporary": false }],
-      "realmRoles": ["CLIENTE"]
+      "credentials": [
+        {
+          "type": "password",
+          "value": "demo123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "CLIENTE"
+      ]
     },
     {
       "username": "repartidor",
@@ -60,8 +78,16 @@
       "requiredActions": [],
       "firstName": "Mateo",
       "lastName": "Repartidor",
-      "credentials": [{ "type": "password", "value": "demo123", "temporary": false }],
-      "realmRoles": ["REPARTIDOR"]
+      "credentials": [
+        {
+          "type": "password",
+          "value": "demo123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "REPARTIDOR"
+      ]
     }
   ]
 }
