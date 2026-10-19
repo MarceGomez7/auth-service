@@ -19,7 +19,6 @@ Mesa Delivery usa Keycloak como proveedor de identidad. El usuario inicia sesió
 | Marcar un pedido como entregado | `REPARTIDOR` con token válido | `200 OK` |
 | Consultar una ruta protegida | Token ausente, inválido o vencido | `401 Unauthorized` |
 
-La consigna de referencia menciona usuario sin permiso, que se demuestra con el `403`. También se puede mostrar token vencido o ausente con el `401`.
 
 ---
 

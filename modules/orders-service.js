@@ -13,6 +13,7 @@ const NOTIFICATIONS_URL = process.env.NOTIFICATIONS_URL || `http://localhost:${N
 const SERVICE_SECRET = process.env.SERVICE_SECRET || 'clave-interna-local-demo';
 const INDEX = path.join(__dirname, '..', 'public', 'index.html');
 const STYLESHEET = path.join(__dirname, '..', 'public', 'style.css');
+const BRANDING_STYLESHEET = path.join(__dirname, '..', 'public', 'branding.css');
 let nextId = 105;
 let orders = [
   { id: 101, customer: 'Sofía Cliente', items: '2 × Café latte · 1 × Croissant', address: 'Av. Santa Fe 1850, Recoleta', total: 8700, status: 'PENDIENTE', createdAt: '12:35' },
@@ -85,6 +86,8 @@ const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
   if (req.method === 'GET' && url.pathname === '/') return send(res, 200, fs.readFileSync(INDEX, 'utf8'), 'text/html; charset=utf-8');
   if (req.method === 'GET' && url.pathname === '/style.css') return send(res, 200, fs.readFileSync(STYLESHEET, 'utf8'), 'text/css; charset=utf-8');
+  if (req.method === 'GET' && url.pathname === '/branding.css') return send(res, 200, fs.readFileSync(BRANDING_STYLESHEET, 'utf8'), 'text/css; charset=utf-8');
+  if (req.method === 'GET' && url.pathname === '/mesa-logo.png') return send(res, 200, fs.readFileSync(path.join(__dirname, '..', 'public', 'mesa-logo.png')), 'image/png');
   if (url.pathname === '/health') return send(res, 200, { service: 'orders-service', status: 'ok' });
   if (url.pathname.startsWith('/api/')) {
     const claims = await authenticate(req, res);
